@@ -27,7 +27,7 @@ public class WalkEventConfiguration : IEntityTypeConfiguration<WalkEvent>
 
         builder.Property(w => w.Status)
             .IsRequired()
-            .HasConversion<int>();
+            .HasConversion<string>();
 
         // Indexes
         builder.HasIndex(w => w.StartAt);
