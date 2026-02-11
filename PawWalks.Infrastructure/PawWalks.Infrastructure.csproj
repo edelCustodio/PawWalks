@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PawWalks.Application\PawWalks.Application.csproj" />
     <ProjectReference Include="..\PawWalks.Domain\PawWalks.Domain.csproj" />
   </ItemGroup>
 

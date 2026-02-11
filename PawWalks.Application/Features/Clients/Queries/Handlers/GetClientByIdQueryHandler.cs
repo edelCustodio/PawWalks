@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PawWalks.Application.Abstractions;
+using PawWalks.Infrastructure.Abstractions;
 using PawWalks.Application.Common.Exceptions;
 using PawWalks.Application.DTOs.Clients;
+using PawWalks.Application.Mappings;
 using PawWalks.Domain.Entities;
 
 namespace PawWalks.Application.Features.Clients.Queries.Handlers

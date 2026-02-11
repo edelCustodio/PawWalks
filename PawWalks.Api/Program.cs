@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PawWalks.Api.Middleware;
-using PawWalks.Application.Abstractions;
+using PawWalks.Infrastructure.Abstractions;
 using PawWalks.Infrastructure.Data;
 using PawWalks.Infrastructure.Repositories;
 

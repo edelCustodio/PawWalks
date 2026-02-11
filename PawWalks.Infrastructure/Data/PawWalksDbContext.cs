@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using PawWalks.Application.Abstractions;
+using PawWalks.Infrastructure.Abstractions;
 using PawWalks.Domain.Common;
 using PawWalks.Domain.Entities;
 

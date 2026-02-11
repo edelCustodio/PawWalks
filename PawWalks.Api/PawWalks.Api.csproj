@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PawWalks.Application\PawWalks.Application.csproj" />
-    <ProjectReference Include="..\PawWalks.Infrastructure\PawWalks.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

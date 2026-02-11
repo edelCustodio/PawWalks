@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PawWalks.Application.Abstractions;
+using PawWalks.Infrastructure.Abstractions;
 using PawWalks.Application.Common.Exceptions;
 using PawWalks.Domain.Entities;
 

@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PawWalks.Application.Abstractions;
+using PawWalks.Infrastructure.Abstractions;
 using PawWalks.Application.Common;
 using PawWalks.Application.Common.Extensions;
 using PawWalks.Application.DTOs.Walks;

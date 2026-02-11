@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PawWalks.Domain.Entities;
 
-namespace PawWalks.Application.Abstractions;
+namespace PawWalks.Infrastructure.Abstractions;
 
 /// <summary>
 /// Interface for the application database context

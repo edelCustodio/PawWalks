@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using PawWalks.Domain.Common;
 
-namespace PawWalks.Application.Abstractions;
+namespace PawWalks.Infrastructure.Abstractions;
 
 /// <summary>
 /// Generic repository interface for data access operations

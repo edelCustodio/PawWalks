@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
-using PawWalks.Application.Abstractions;
+using PawWalks.Infrastructure.Abstractions;
 using PawWalks.Application.DTOs.Clients;
 using PawWalks.Application.Mappings;
 using PawWalks.Domain.Entities;
