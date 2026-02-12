@@ -15,5 +15,5 @@ public class WalkDetailDto
     public WalkStatus Status { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public List<DogListItemDto> Dogs { get; set; } = new();
+    public List<DogDetailDto> Dogs { get; set; } = new();
 }

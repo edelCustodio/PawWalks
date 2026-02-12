@@ -25,13 +25,6 @@ export interface ClientUpdateRequest {
   zip?: string;
 }
 
-export interface ClientListItemDto {
-  id: string;
-  fullName: string;
-  email: string;
-  phone: string;
-}
-
 export interface ClientDetailDto {
   id: string;
   firstName: string;
@@ -44,6 +37,7 @@ export interface ClientDetailDto {
   zip?: string;
   createdAt: string;
   updatedAt: string;
+  totalDogs: number;
   dogs: DogListItemDto[];
 }
 

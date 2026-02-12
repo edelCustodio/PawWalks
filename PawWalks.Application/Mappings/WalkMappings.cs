@@ -34,7 +34,7 @@ public static class WalkMappings
             CreatedAt = walk.CreatedAt,
             UpdatedAt = walk.UpdatedAt,
             Dogs = walk.WalkEventDogs?
-                .Select(wed => wed.Dog.ToListItemDto())
+                .Select(wed => wed.Dog.ToDetailDto())
                 .ToList() ?? new()
         };
     }

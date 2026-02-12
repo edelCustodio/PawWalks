@@ -12,7 +12,7 @@ namespace PawWalks.Application.Features.Clients.Queries.Handlers;
 /// <summary>
 /// Handler for getting paginated clients with search
 /// </summary>
-public class GetClientsQueryHandler : IRequestHandler<GetClientsQuery, PagedResult<ClientListItemDto>>
+public class GetClientsQueryHandler : IRequestHandler<GetClientsQuery, PagedResult<ClientDetailDto>>
 {
     private readonly IRepository<Client> _clientRepository;
 
@@ -21,9 +21,10 @@ public class GetClientsQueryHandler : IRequestHandler<GetClientsQuery, PagedResu
         _clientRepository = clientRepository;
     }
 
-    public async Task<PagedResult<ClientListItemDto>> Handle(GetClientsQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<ClientDetailDto>> Handle(GetClientsQuery request, CancellationToken cancellationToken)
     {
-        var query = _clientRepository.GetAll();
+        var query = _clientRepository.GetAll()
+			.Include(c => c.Dogs.Where(w => w.IsActive)).AsQueryable();
 
         // Apply search filter
         if (!string.IsNullOrWhiteSpace(request.Search))
@@ -41,7 +42,7 @@ public class GetClientsQueryHandler : IRequestHandler<GetClientsQuery, PagedResu
 
         // Apply pagination with projection
         return await query.ToPagedListAsync(
-            c => c.ToListItemDto(),
+            c => c.ToDetailDto(),
             request.Page,
             request.PageSize,
             cancellationToken);

@@ -1,0 +1,15 @@
+<div class="container mx-auto p-6">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Clients</h1>
+    <a mat-raised-button color="primary" routerLink="/clients/create">
+      <mat-icon>add</mat-icon>
+      New Client
+    </a>
+  </div>
+
+  <app-data-grid
+    [config]="gridConfigWithLoading"
+    [data]="clients()"
+    (rowClick)="onRowClick($event)"
+  ></app-data-grid>
+</div>

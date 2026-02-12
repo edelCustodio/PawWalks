@@ -5,7 +5,6 @@ import { LOCALHOST_CONFIG } from '../../../../config/localhost.config';
 import {
   ClientCreateRequest,
   ClientUpdateRequest,
-  ClientListItemDto,
   ClientDetailDto,
 } from '../models/clients.model';
 import { PagedResult } from '../../../shared/models/pagination';
@@ -20,12 +19,12 @@ export class ClientsService {
   getClients(
     pageNumber: number = 1,
     pageSize: number = 10,
-  ): Observable<PagedResult<ClientListItemDto>> {
+  ): Observable<PagedResult<ClientDetailDto>> {
     const params = new HttpParams()
-      .set('pageNumber', pageNumber.toString())
+      .set('page', pageNumber.toString())
       .set('pageSize', pageSize.toString());
 
-    return this.http.get<PagedResult<ClientListItemDto>>(this.apiUrl, {
+    return this.http.get<PagedResult<ClientDetailDto>>(this.apiUrl, {
       params,
     });
   }

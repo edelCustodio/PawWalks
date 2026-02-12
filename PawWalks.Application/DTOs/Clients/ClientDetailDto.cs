@@ -18,5 +18,12 @@ public class ClientDetailDto
     public string? Zip { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public List<DogListItemDto> Dogs { get; set; } = new();
+	public int TotalDogs
+	{
+		get
+		{
+			return this.Dogs.Count;
+		}
+	}
+	public List<DogDetailDto> Dogs { get; set; } = new();
 }

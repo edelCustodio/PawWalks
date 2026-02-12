@@ -7,7 +7,7 @@ namespace PawWalks.Application.Features.Dogs.Queries;
 /// <summary>
 /// Query to get paginated list of dogs with filters
 /// </summary>
-public class GetDogsQuery : IRequest<PagedResult<DogListItemDto>>
+public class GetDogsQuery : IRequest<PagedResult<DogDetailDto>>
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 10;

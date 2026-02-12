@@ -8,19 +8,6 @@ namespace PawWalks.Application.Mappings;
 /// </summary>
 public static class DogMappings
 {
-    public static DogListItemDto ToListItemDto(this Dog dog)
-    {
-        return new DogListItemDto
-        {
-            Id = dog.Id,
-            ClientId = dog.ClientId,
-            Name = dog.Name,
-            Breed = dog.Breed,
-            IsActive = dog.IsActive,
-            ClientName = dog.Client != null ? $"{dog.Client.FirstName} {dog.Client.LastName}" : null
-        };
-    }
-
     public static DogDetailDto ToDetailDto(this Dog dog)
     {
         return new DogDetailDto

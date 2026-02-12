@@ -12,7 +12,7 @@ namespace PawWalks.Application.Features.Dogs.Queries.Handlers
 	/// <summary>
 	/// Handler for getting paginated dogs with filters
 	/// </summary>
-	public class GetDogsQueryHandler : IRequestHandler<GetDogsQuery, PagedResult<DogListItemDto>>
+	public class GetDogsQueryHandler : IRequestHandler<GetDogsQuery, PagedResult<DogDetailDto>>
 	{
 		private readonly IRepository<Dog> _dogRepository;
 
@@ -21,7 +21,7 @@ namespace PawWalks.Application.Features.Dogs.Queries.Handlers
 			_dogRepository = dogRepository;
 		}
 
-		public async Task<PagedResult<DogListItemDto>> Handle(GetDogsQuery request, CancellationToken cancellationToken)
+		public async Task<PagedResult<DogDetailDto>> Handle(GetDogsQuery request, CancellationToken cancellationToken)
 		{
 			IQueryable<Dog> query = _dogRepository.GetAll().Include(d => d.Client);
 
@@ -45,7 +45,7 @@ namespace PawWalks.Application.Features.Dogs.Queries.Handlers
 
 			// Apply pagination with projection
 			return await query.ToPagedListAsync(
-				d => d.ToListItemDto(),
+				d => d.ToDetailDto(),
 				request.Page,
 				request.PageSize,
 				cancellationToken);

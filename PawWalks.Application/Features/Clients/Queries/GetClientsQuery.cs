@@ -7,7 +7,7 @@ namespace PawWalks.Application.Features.Clients.Queries;
 /// <summary>
 /// Query to get paginated list of clients with optional search
 /// </summary>
-public class GetClientsQuery : IRequest<PagedResult<ClientListItemDto>>
+public class GetClientsQuery : IRequest<PagedResult<ClientDetailDto>>
 {
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 10;

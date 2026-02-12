@@ -8,16 +8,6 @@ namespace PawWalks.Application.Mappings;
 /// </summary>
 public static class ClientMappings
 {
-    public static ClientListItemDto ToListItemDto(this Client client)
-    {
-        return new ClientListItemDto
-        {
-            Id = client.Id,
-            FullName = $"{client.FirstName} {client.LastName}",
-            Email = client.Email,
-            Phone = client.Phone
-        };
-    }
 
     public static ClientDetailDto ToDetailDto(this Client client)
     {
@@ -34,7 +24,7 @@ public static class ClientMappings
             Zip = client.Zip,
             CreatedAt = client.CreatedAt,
             UpdatedAt = client.UpdatedAt,
-            Dogs = client.Dogs.Select(d => d.ToListItemDto()).ToList()
+            Dogs = client.Dogs.Select(d => d.ToDetailDto()).ToList()
         };
     }
 
