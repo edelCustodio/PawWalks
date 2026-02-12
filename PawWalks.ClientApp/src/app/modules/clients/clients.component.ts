@@ -1,5 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { DataGridComponent } from '../../shared/components/data-grid/data-grid.component';
@@ -16,6 +16,10 @@ import { ClientDetailDto } from './models/clients.model';
 export class ClientsComponent implements OnInit {
   clients = signal<ClientDetailDto[]>([]);
   loading = signal(false);
+
+  private _clientsService = inject(ClientsService);
+  private _router = inject(Router);
+  private _route = inject(ActivatedRoute);
 
   get gridConfigWithLoading(): DataGridConfig<ClientDetailDto> {
     return { ...this.gridConfig, loading: this.loading() };
@@ -90,31 +94,19 @@ export class ClientsComponent implements OnInit {
     noDataMessage: 'No clients found',
   };
 
-  constructor(
-    private clientsService: ClientsService,
-    private router: Router,
-  ) {}
-
   ngOnInit() {
     this.loadClients();
   }
 
   loadClients() {
     this.loading.set(true);
-    this.clientsService.getClients().subscribe({
-      next: (response) => {
-        this.clients.set(response.items);
-        this.loading.set(false);
-      },
-      error: (error) => {
-        console.error('Error loading clients:', error);
-        this.loading.set(false);
-      },
-    });
+    const clientsFromRoute = this._route.snapshot.data['clients'];
+    this.clients.set(clientsFromRoute.items);
+    this.loading.set(false);
   }
 
   editClient(client: ClientDetailDto) {
-    this.router.navigate(['/clients', client.id, 'edit']);
+    this._router.navigate(['/clients', client.id, 'edit']);
   }
 
   deleteClient(client: ClientDetailDto) {
@@ -123,7 +115,7 @@ export class ClientsComponent implements OnInit {
         `Are you sure you want to delete ${client.firstName} ${client.lastName}?`,
       )
     ) {
-      this.clientsService.deleteClient(client.id).subscribe({
+      this._clientsService.deleteClient(client.id).subscribe({
         next: () => {
           this.loadClients();
         },
@@ -136,7 +128,7 @@ export class ClientsComponent implements OnInit {
   }
 
   onRowClick(client: ClientDetailDto) {
-    this.router.navigate(['/clients', client.id]);
+    this._router.navigate(['/clients', client.id]);
   }
 
   formatAddress(client: ClientDetailDto): string {
