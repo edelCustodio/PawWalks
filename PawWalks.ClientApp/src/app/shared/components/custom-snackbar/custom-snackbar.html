@@ -1,0 +1,15 @@
+<div class="snackbar-content" [ngClass]="data.type">
+  <mat-icon
+    class="snackbar-icon"
+    [ngClass]="{
+      'text-green-800': data.type === 'success',
+      'text-red-800': data.type === 'error',
+      'text-yellow-800': data.type === 'warning',
+      'text-blue-800': data.type === 'info',
+    }"
+    aria-hidden="true"
+  >
+    {{ getIcon(data.type) }}
+  </mat-icon>
+  <span class="snackbar-message">{{ data.message }}</span>
+</div>
