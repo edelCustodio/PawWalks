@@ -1,0 +1,35 @@
+mat-sidenav-container {
+  background-color: #f9fafb;
+}
+
+mat-sidenav {
+  background-color: white;
+
+  mat-nav-list {
+    padding-top: 0;
+
+    a[mat-list-item] {
+      margin: 0 8px 4px 8px;
+      border-radius: 8px;
+      height: 48px;
+
+      &.active {
+        background-color: #eff6ff;
+        color: #2563eb;
+
+        mat-icon {
+          color: #2563eb;
+        }
+      }
+
+      &:hover {
+        background-color: #f3f4f6;
+      }
+    }
+  }
+}
+
+mat-toolbar {
+  height: 64px;
+  padding: 0 16px;
+}

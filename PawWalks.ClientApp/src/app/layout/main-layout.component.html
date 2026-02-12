@@ -1,0 +1,73 @@
+<mat-sidenav-container class="h-screen">
+  <!-- Sidebar -->
+  <mat-sidenav
+    #sidenav
+    [opened]="isSidenavOpen()"
+    mode="side"
+    class="w-64 border-r border-gray-200"
+  >
+    <!-- Logo/Brand -->
+    <div class="p-4 border-b border-gray-200">
+      <div class="flex items-center gap-2">
+        <mat-icon class="text-blue-600">pets</mat-icon>
+        <h1 class="text-xl font-bold text-gray-800">PawWalks</h1>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <mat-nav-list class="pt-4">
+      @for (item of navItems; track item.path) {
+        <a
+          mat-list-item
+          [routerLink]="item.path"
+          routerLinkActive="bg-blue-50 text-blue-600"
+          class="hover:bg-gray-50 transition-colors"
+        >
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="flex flex-col">
+    <!-- Top Toolbar -->
+    <mat-toolbar class="bg-white border-b border-gray-200 shadow-sm">
+      <button
+        mat-icon-button
+        (click)="toggleSidenav()"
+        aria-label="Toggle menu"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <span class="flex-1"></span>
+
+      <!-- User Menu -->
+      <button mat-icon-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>Mi Perfil</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Configuración</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar Sesión</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <!-- Page Content -->
+    <div class="flex-1 overflow-auto p-6 bg-gray-50">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
