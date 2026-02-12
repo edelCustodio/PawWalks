@@ -1,0 +1,25 @@
+::ng-deep {
+  .data-grid-container {
+    .mat-mdc-table {
+      background: white;
+
+      .mat-mdc-header-cell {
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.87);
+      }
+
+      .mat-mdc-row {
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+      }
+    }
+
+    .mat-mdc-paginator {
+      background: white;
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+    }
+  }
+}
