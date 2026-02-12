@@ -77,3 +77,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.mdc-notched-outline__notch {
+  border-right: none;
+}

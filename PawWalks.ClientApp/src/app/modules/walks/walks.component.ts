@@ -5,8 +5,8 @@ import { Component } from '@angular/core';
   standalone: true,
   template: `
     <div class="container mx-auto">
-      <h1 class="text-3xl font-bold text-gray-800 mb-6">Paseos</h1>
-      <p class="text-gray-600">Lista de paseos - En desarrollo</p>
+      <h1 class="text-3xl font-bold text-gray-800 mb-6">Walks</h1>
+      <p class="text-gray-600">Walks list - Under development</p>
     </div>
   `,
 })

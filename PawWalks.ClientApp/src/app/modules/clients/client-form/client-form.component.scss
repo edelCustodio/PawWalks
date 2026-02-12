@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+mat-card-header {
+  padding: 24px 24px 0;
+
+  mat-card-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+}
+
+mat-icon {
+  vertical-align: middle;
+}
+
+.container {
+  min-height: 100%;
+}
+
+mat-form-field {
+  mat-icon[matPrefix] {
+    margin-right: 8px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
+
+// Dog card styles
+mat-card mat-card {
+  border: 1px solid #e0e0e0;
+
+  h4 {
+    margin: 0;
+  }
+}
+
+// Loading spinner in button
+button mat-spinner {
+  display: inline-block;
+  margin-right: 8px;
+
+  ::ng-deep circle {
+    stroke: currentColor;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PawWalks.Api.Middleware;
+using PawWalks.Application;
 using PawWalks.Infrastructure.Abstractions;
 using PawWalks.Infrastructure.Data;
 using PawWalks.Infrastructure.Repositories;
@@ -20,15 +21,15 @@ builder.Services.AddScoped<IAppDbContext>(provider =>
 // Repository pattern
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-// MediatR
+// MediatR - Registers all command/query handlers from Application assembly
 builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(IRepository<>).Assembly));
+    cfg.RegisterServicesFromAssembly(typeof(IApplicationAssemblyMarker).Assembly));
 
-// FluentValidation
-builder.Services.AddValidatorsFromAssembly(typeof(IRepository<>).Assembly);
+// FluentValidation - Registers all validators from Application assembly
+builder.Services.AddValidatorsFromAssembly(typeof(IApplicationAssemblyMarker).Assembly);
 
 // CORS
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:4200" };
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:4210" };
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>

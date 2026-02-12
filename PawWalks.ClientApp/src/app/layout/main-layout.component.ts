@@ -27,9 +27,9 @@ export class MainLayoutComponent {
   isSidenavOpen = signal(true);
 
   navItems = [
-    { path: '/clients', icon: 'people', label: 'Clientes' },
-    { path: '/dogs', icon: 'pets', label: 'Perros' },
-    { path: '/walks', icon: 'directions_walk', label: 'Paseos' },
+    { path: '/clients', icon: 'people', label: 'Clients' },
+    { path: '/dogs', icon: 'pets', label: 'Dogs' },
+    { path: '/walks', icon: 'directions_walk', label: 'Walks' },
   ];
 
   toggleSidenav(): void {

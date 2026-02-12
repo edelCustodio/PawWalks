@@ -1,0 +1,272 @@
+<div class="container mx-auto max-w-4xl py-6">
+  <mat-card class="mb-6">
+    <mat-card-header>
+      <mat-card-title class="text-2xl font-bold text-gray-800">
+        <mat-icon class="align-middle mr-2">person_add</mat-icon>
+        New Client
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="mt-6">
+        <!-- Client Information Section -->
+        <div class="mb-6">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">
+            Client Information
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- First Name -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>First Name</mat-label>
+              <input matInput formControlName="firstName" placeholder="John" />
+              @if (
+                clientForm.get("firstName")?.touched &&
+                clientForm.get("firstName")?.errors
+              ) {
+                <mat-error>{{ getErrorMessage("firstName") }}</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Last Name -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="lastName" placeholder="Doe" />
+              @if (
+                clientForm.get("lastName")?.touched &&
+                clientForm.get("lastName")?.errors
+              ) {
+                <mat-error>{{ getErrorMessage("lastName") }}</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Email -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                type="email"
+                formControlName="email"
+                placeholder="john@example.com"
+              />
+              <mat-icon matPrefix>email</mat-icon>
+              @if (
+                clientForm.get("email")?.touched &&
+                clientForm.get("email")?.errors
+              ) {
+                <mat-error>{{ getErrorMessage("email") }}</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Phone -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Phone</mat-label>
+              <input
+                matInput
+                formControlName="phone"
+                placeholder="145-555-1234"
+              />
+              <mat-icon matPrefix>phone</mat-icon>
+              @if (
+                clientForm.get("phone")?.touched &&
+                clientForm.get("phone")?.errors
+              ) {
+                <mat-error>{{ getErrorMessage("phone") }}</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Address -->
+            <mat-form-field appearance="outline" class="w-full md:col-span-2">
+              <mat-label>Address</mat-label>
+              <input
+                matInput
+                formControlName="addressLine1"
+                placeholder="123 Main Street"
+              />
+              <mat-icon matPrefix>home</mat-icon>
+            </mat-form-field>
+
+            <!-- City -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>City</mat-label>
+              <input matInput formControlName="city" placeholder="New York" />
+            </mat-form-field>
+
+            <!-- State -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>State</mat-label>
+              <input matInput formControlName="state" placeholder="NY" />
+            </mat-form-field>
+
+            <!-- Zip -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Zip Code</mat-label>
+              <input matInput formControlName="zip" placeholder="01000" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-divider class="my-6"></mat-divider>
+
+        <!-- Dogs Section -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-700">
+              <mat-icon class="align-middle mr-2">pets</mat-icon>
+              Dogs
+            </h3>
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              (click)="addDog()"
+            >
+              <mat-icon>add</mat-icon>
+              Add Dog
+            </button>
+          </div>
+
+          @if (dogsArray.length === 0) {
+            <div class="text-center py-8 text-gray-500">
+              <mat-icon class="text-6xl text-gray-300">pets</mat-icon>
+              <p class="mt-2">No dogs added</p>
+              <p class="text-sm">Click "Add Dog" to add one</p>
+            </div>
+          }
+
+          @for (dogGroup of dogsArray.controls; track i; let i = $index) {
+            <mat-card class="mb-4 bg-gray-50">
+              <mat-card-content>
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="font-semibold text-gray-700">Dog {{ i + 1 }}</h4>
+                  <button
+                    type="button"
+                    mat-icon-button
+                    color="warn"
+                    (click)="removeDog(i)"
+                    [attr.aria-label]="'Remove dog ' + (i + 1)"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+
+                <div
+                  [formGroup]="$any(dogGroup)"
+                  class="grid grid-cols-1 md:grid-cols-2 gap-4"
+                >
+                  <!-- Dog Name -->
+                  <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" placeholder="Max" />
+                    @if (
+                      dogGroup.get("name")?.touched &&
+                      dogGroup.get("name")?.errors
+                    ) {
+                      <mat-error>{{ getDogErrorMessage(i, "name") }}</mat-error>
+                    }
+                  </mat-form-field>
+
+                  <!-- Dog Breed -->
+                  <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Breed</mat-label>
+                    <input
+                      matInput
+                      formControlName="breed"
+                      placeholder="Labrador"
+                    />
+                    @if (
+                      dogGroup.get("breed")?.touched &&
+                      dogGroup.get("breed")?.errors
+                    ) {
+                      <mat-error>{{
+                        getDogErrorMessage(i, "breed")
+                      }}</mat-error>
+                    }
+                  </mat-form-field>
+
+                  <!-- Birth Date -->
+                  <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Birth Date</mat-label>
+                    <input matInput type="date" formControlName="birthDate" />
+                  </mat-form-field>
+
+                  <!-- Active Checkbox -->
+                  <div class="flex items-center pt-2">
+                    <mat-checkbox formControlName="isActive">
+                      Active Dog
+                    </mat-checkbox>
+                  </div>
+
+                  <!-- Notes -->
+                  <mat-form-field
+                    appearance="outline"
+                    class="w-full md:col-span-2"
+                  >
+                    <mat-label>Notes</mat-label>
+                    <textarea
+                      matInput
+                      formControlName="notes"
+                      rows="3"
+                      placeholder="Additional information about the dog..."
+                    ></textarea>
+                    @if (
+                      dogGroup.get("notes")?.touched &&
+                      dogGroup.get("notes")?.errors
+                    ) {
+                      <mat-error>{{
+                        getDogErrorMessage(i, "notes")
+                      }}</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+
+        <!-- Error Message -->
+        @if (errorMessage()) {
+          <div
+            class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+          >
+            <div class="flex items-center">
+              <mat-icon class="mr-2">error</mat-icon>
+              <span>{{ errorMessage() }}</span>
+            </div>
+          </div>
+        }
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end gap-3 mt-6">
+          <button
+            type="button"
+            mat-stroked-button
+            (click)="onCancel()"
+            [disabled]="isLoading()"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            [disabled]="isLoading() || clientForm.invalid"
+          >
+            @if (isLoading()) {
+              <mat-spinner
+                diameter="20"
+                class="inline-block mr-2"
+              ></mat-spinner>
+              Saving...
+            } @else {
+              <ng-container>
+                <mat-icon>save</mat-icon>
+                Save Client
+              </ng-container>
+            }
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
