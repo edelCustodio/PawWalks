@@ -1,0 +1,11 @@
+.custom-dialog-panel {
+  @screen md {
+    @apply max-w-lg;
+  }
+
+  .mat-mdc-dialog-container {
+    .mat-mdc-dialog-surface {
+      padding: 0 !important;
+    }
+  }
+}
