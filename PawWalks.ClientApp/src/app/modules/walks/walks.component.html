@@ -1,0 +1,54 @@
+<div class="container mx-auto p-6">
+  <!-- Header with Create Button -->
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Walks</h1>
+    <button
+      mat-raised-button
+      color="primary"
+      routerLink="/walks/create"
+      class="flex items-center gap-2"
+    >
+      <mat-icon>add</mat-icon>
+      Schedule Group Walk
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center py-12">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  } @else {
+    @if (walks().length === 0) {
+      <div class="text-center py-12 bg-gray-50 rounded-lg">
+        <mat-icon class="text-gray-400 text-6xl mb-4">directions_walk</mat-icon>
+        <h2 class="text-xl font-semibold text-gray-700 mb-2">
+          No walks scheduled
+        </h2>
+        <p class="text-gray-600 mb-4">
+          Create your first group walk to get started
+        </p>
+        <button mat-raised-button color="primary" routerLink="/walks/create">
+          <mat-icon>add</mat-icon>
+          Schedule Group Walk
+        </button>
+      </div>
+    } @else {
+      <!-- Walks Grid -->
+      <div class="bg-white rounded-lg shadow">
+        <app-data-grid [config]="gridConfig()" [data]="walks()">
+        </app-data-grid>
+
+        <!-- Pagination -->
+        <mat-paginator
+          [length]="totalCount()"
+          [pageSize]="pageSize()"
+          [pageIndex]="pageIndex()"
+          [pageSizeOptions]="[10, 25, 50, 100]"
+          (page)="onPageChange($event)"
+          showFirstLastButtons
+        >
+        </mat-paginator>
+      </div>
+    }
+  }
+</div>
