@@ -96,7 +96,6 @@ export class ClientsComponent implements OnInit {
     filterable: true,
     filterPlaceholder: 'Search clients...',
     noDataMessage: 'No clients found',
-    expandable: true,
   };
 
   ngOnInit() {
@@ -161,7 +160,7 @@ export class ClientsComponent implements OnInit {
   }
 
   onRowClick(client: ClientDetailDto) {
-    this._router.navigate(['/clients', client.id]);
+    this._router.navigate(['/clients', client.id, 'edit']);
   }
 
   formatAddress(client: ClientDetailDto): string {
@@ -172,27 +171,5 @@ export class ClientsComponent implements OnInit {
       client.zip,
     ].filter(Boolean);
     return parts.join(', ');
-  }
-
-  scheduleWalk(clientId: string, dogId: string) {
-    // Navigate to walk scheduling page
-    this._router.navigate(['/walks', 'create'], {
-      queryParams: { clientId, dogId },
-    });
-  }
-
-  getAge(birthDate?: string): string {
-    if (!birthDate) return 'N/A';
-    const birth = new Date(birthDate);
-    const today = new Date();
-    const ageInYears = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birth.getDate())
-    ) {
-      return `${ageInYears - 1} years`;
-    }
-    return `${ageInYears} years`;
   }
 }
