@@ -1,0 +1,299 @@
+<div class="container mx-auto p-6 max-w-5xl">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Schedule Group Walk</h1>
+    <button mat-icon-button routerLink="/walks" matTooltip="Back to walks">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  @if (isLoadingClients()) {
+    <div class="flex justify-center items-center py-12">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Selected Dogs Summary Card -->
+      @if (hasSelectedDogs()) {
+        <mat-card class="!bg-green-50 border-l-4 border-green-500">
+          <mat-card-content class="!pt-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <mat-icon class="text-green-600">pets</mat-icon>
+                <h2 class="text-lg font-semibold text-gray-800">
+                  {{ selectedDogsForWalk().length }}
+                  {{ selectedDogsForWalk().length === 1 ? "Dog" : "Dogs" }}
+                  Selected for Walk
+                </h2>
+              </div>
+              <mat-chip-set>
+                @for (dog of selectedDogsForWalk(); track dog.id) {
+                  <mat-chip
+                    (removed)="removeDogFromWalk(dog)"
+                    [removable]="true"
+                  >
+                    {{ dog.name }}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip>
+                }
+              </mat-chip-set>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <!-- Date and Time -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Date -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Walk Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="datePicker"
+            formControlName="startDate"
+            [min]="minDate"
+            [max]="maxDate"
+            placeholder="MM/DD/YYYY"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="datePicker">
+            <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #datePicker></mat-datepicker>
+          @if (form.controls.startDate.hasError("required")) {
+            <mat-error>Date is required</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Time -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Walk Time</mat-label>
+          <input matInput type="time" formControlName="startTime" />
+          <mat-icon matIconSuffix>schedule</mat-icon>
+          @if (form.controls.startTime.hasError("required")) {
+            <mat-error>Time is required</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <!-- Duration Slider -->
+      <div class="space-y-2">
+        <label class="text-sm font-medium text-gray-700">
+          Duration: {{ formatDuration(form.controls.durationMinutes.value!) }}
+        </label>
+        <mat-slider
+          min="10"
+          max="240"
+          step="5"
+          showTickMarks
+          discrete
+          class="w-full"
+        >
+          <input matSliderThumb formControlName="durationMinutes" />
+        </mat-slider>
+        <div class="flex justify-between text-xs text-gray-500">
+          <span>10 min</span>
+          <span>4 hours</span>
+        </div>
+        @if (form.controls.durationMinutes.hasError("min")) {
+          <p class="text-red-600 text-sm">
+            Duration must be at least 10 minutes
+          </p>
+        }
+        @if (form.controls.durationMinutes.hasError("max")) {
+          <p class="text-red-600 text-sm">
+            Duration cannot exceed 240 minutes (4 hours)
+          </p>
+        }
+      </div>
+
+      <!-- Dog Selection -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+          <mat-icon>pets</mat-icon>
+          Add Dogs to Walk
+        </h3>
+
+        <!-- Client Selector -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Select Client</mat-label>
+          <mat-select
+            [value]="selectedClientId()"
+            (selectionChange)="onClientSelected($event.value)"
+          >
+            <mat-option *ngFor="let client of allClients()" [value]="client.id">
+              {{ client.firstName }} {{ client.lastName }} -
+              {{ client.totalDogs }}
+              {{ client.totalDogs === 1 ? "dog" : "dogs" }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>person</mat-icon>
+        </mat-form-field>
+
+        <!-- Available Dogs from Selected Client -->
+        @if (selectedClientId()) {
+          @if (isLoadingClientDogs()) {
+            <div class="flex justify-center py-4">
+              <mat-spinner diameter="32"></mat-spinner>
+            </div>
+          } @else {
+            @if (availableDogsForSelectedClient().length === 0) {
+              <div
+                class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center"
+              >
+                <mat-icon class="text-gray-400">info</mat-icon>
+                <p class="text-sm text-gray-600 mt-2">
+                  @if (hasDogsFromClient(selectedClientId()!)) {
+                    All active dogs from this client have been added
+                  } @else {
+                    No active dogs available for this client
+                  }
+                </p>
+              </div>
+            } @else {
+              <div>
+                <p class="text-sm text-gray-600 mb-3">
+                  Available dogs from {{ selectedClient()!.firstName }}
+                  {{ selectedClient()!.lastName }}:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  @for (dog of availableDogsForSelectedClient(); track dog.id) {
+                    <mat-card class="hover:shadow-md transition-all">
+                      <mat-card-content class="!py-3">
+                        <div class="flex items-center justify-between gap-3">
+                          <div class="flex items-center gap-3 flex-1">
+                            <mat-icon class="text-gray-400">pets</mat-icon>
+                            <div>
+                              <h3 class="font-semibold text-gray-800">
+                                {{ dog.name }}
+                              </h3>
+                              <p class="text-sm text-gray-600">
+                                {{ dog.breed }}
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            mat-mini-fab
+                            color="primary"
+                            (click)="addDogToWalk(dog)"
+                            matTooltip="Add to walk"
+                          >
+                            <mat-icon>add</mat-icon>
+                          </button>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  }
+                </div>
+              </div>
+            }
+          }
+        } @else {
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p class="text-sm text-gray-700 text-center">
+              Select a client above to see their available dogs
+            </p>
+          </div>
+        }
+      </div>
+
+      <!-- Selected Dogs List -->
+      @if (selectedDogsForWalk().length > 0) {
+        <div class="space-y-3">
+          <h3
+            class="text-lg font-semibold text-gray-800 flex items-center gap-2"
+          >
+            <mat-icon>group</mat-icon>
+            Dogs in This Walk ({{ selectedDogsForWalk().length }})
+          </h3>
+
+          <div class="space-y-2">
+            @for (dog of selectedDogsForWalk(); track dog.id) {
+              <mat-card class="!bg-gray-50">
+                <mat-card-content class="!py-3">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <mat-icon class="text-blue-600">pets</mat-icon>
+                      <div>
+                        <h3 class="font-semibold text-gray-800">
+                          {{ dog.name }}
+                        </h3>
+                        <p class="text-sm text-gray-600">
+                          {{ dog.breed }} • Owner: {{ dog.clientName }}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      mat-icon-button
+                      color="warn"
+                      (click)="removeDogFromWalk(dog)"
+                      matTooltip="Remove from walk"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            }
+          </div>
+        </div>
+      } @else {
+        <div
+          class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center"
+        >
+          <mat-icon class="text-yellow-600">warning</mat-icon>
+          <p class="text-sm text-gray-700 mt-2">
+            At least one dog must be added to the walk
+          </p>
+        </div>
+      }
+
+      <!-- Notes -->
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Notes (Optional)</mat-label>
+        <textarea
+          matInput
+          formControlName="notes"
+          rows="4"
+          placeholder="Add any special instructions or notes for the walk..."
+          maxlength="500"
+        ></textarea>
+        <mat-icon matPrefix>notes</mat-icon>
+        <mat-hint align="end">
+          {{ form.controls.notes.value?.length || 0 }} / 500
+        </mat-hint>
+        @if (form.controls.notes.hasError("maxlength")) {
+          <mat-error>Notes cannot exceed 500 characters</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Action Buttons -->
+      <div class="flex justify-end gap-3 pt-4 border-t">
+        <button
+          type="button"
+          mat-stroked-button
+          (click)="cancel()"
+          [disabled]="isLoading()"
+        >
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          [disabled]="isLoading() || form.invalid || !hasSelectedDogs()"
+        >
+          @if (isLoading()) {
+            <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+          } @else {
+            <mat-icon>event</mat-icon>
+          }
+          Schedule Walk
+        </button>
+      </div>
+    </form>
+  }
+</div>
