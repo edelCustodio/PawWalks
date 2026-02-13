@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { LOCALHOST_CONFIG } from '../../../../config/localhost.config';
 import {
   WalkCreateRequest,
@@ -81,5 +81,23 @@ export class WalksService {
    */
   deleteWalk(id: string): Observable<void> {
     return this._http.delete<void>(`${this._apiUrl}/${id}`);
+  }
+
+  /**
+   * Update only the status of a walk
+   */
+  updateStatus(id: string, status: WalkStatus): Observable<void> {
+    return this.getWalkById(id).pipe(
+      switchMap((walk) => {
+        const request: WalkUpdateRequest = {
+          startAt: walk.startAt,
+          durationMinutes: walk.durationMinutes,
+          notes: walk.notes,
+          dogIds: walk.dogs.map((d) => d.id),
+          status: status,
+        };
+        return this.updateWalk(id, request);
+      }),
+    );
   }
 }
