@@ -1,7 +1,7 @@
 // Base interfaces matching backend DTOs
 
 import { Validators } from '@angular/forms';
-import { DogFormModel, DogListItemDto } from '../../dogs/models/dogs.model';
+import { DogDetailDto, DogFormModel } from '../../dogs/models/dogs.model';
 
 export interface ClientCreateRequest {
   firstName: string;
@@ -38,7 +38,7 @@ export interface ClientDetailDto {
   createdAt: string;
   updatedAt: string;
   totalDogs: number;
-  dogs: DogListItemDto[];
+  dogs: DogDetailDto[];
 }
 
 // Form models (for internal use with reactive forms)

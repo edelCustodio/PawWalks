@@ -1,9 +1,21 @@
 <div class="container mx-auto max-w-4xl py-6">
   <mat-card class="mb-6">
     <mat-card-header>
-      <mat-card-title class="text-2xl font-bold text-gray-800">
-        <mat-icon class="align-middle mr-2">person_add</mat-icon>
-        New Client
+      <mat-card-title
+        class="text-2xl font-bold text-gray-800 inline-flex items-center gap-2"
+      >
+        <button
+          type="button"
+          mat-icon-button
+          (click)="onCancel()"
+          [attr.aria-label]="'Back to clients list'"
+        >
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="inline-flex items-center">
+          <mat-icon class="align-middle mr-2">person_add</mat-icon>
+          {{ title() }}
+        </div>
       </mat-card-title>
     </mat-card-header>
 
@@ -104,6 +116,32 @@
               <input matInput formControlName="zip" placeholder="01000" />
             </mat-form-field>
           </div>
+
+          <!-- Buttons section for update client -->
+          @if (isEditMode()) {
+            <div class="flex justify-end gap-3 mt-6">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                (click)="updateClient()"
+                [disabled]="isLoading() || clientForm.invalid"
+              >
+                @if (isLoading()) {
+                  <mat-spinner
+                    diameter="20"
+                    class="inline-block mr-2"
+                  ></mat-spinner>
+                  Updating...
+                } @else {
+                  <ng-container>
+                    <mat-icon>save</mat-icon>
+                    Update Client
+                  </ng-container>
+                }
+              </button>
+            </div>
+          }
         </div>
 
         <mat-divider class="my-6"></mat-divider>
@@ -138,13 +176,26 @@
             <mat-card class="mb-4 bg-gray-50">
               <mat-card-content>
                 <div class="flex items-center justify-between mb-3">
-                  <h4 class="font-semibold text-gray-700">Dog {{ i + 1 }}</h4>
+                  <h4 class="font-semibold text-gray-700">
+                    Dog {{ i + 1 }}
+                    @if (dogGroup.value.id) {
+                      <span class="text-xs text-gray-500 ml-2">(Existing)</span>
+                    } @else {
+                      <span class="text-xs text-green-600 ml-2">(New)</span>
+                    }
+                  </h4>
+
                   <button
                     type="button"
                     mat-icon-button
                     color="warn"
-                    (click)="removeDog(i)"
-                    [attr.aria-label]="'Remove dog ' + (i + 1)"
+                    (click)="isEditMode() ? deleteDog(i) : removeDog(i)"
+                    [disabled]="isDogLoading(i)"
+                    [attr.aria-label]="
+                      isEditMode()
+                        ? 'Delete dog ' + (i + 1)
+                        : 'Remove dog ' + (i + 1)
+                    "
                   >
                     <mat-icon>delete</mat-icon>
                   </button>
@@ -220,6 +271,31 @@
                   </mat-form-field>
                 </div>
               </mat-card-content>
+              <!-- Buttons to update dog information -->
+              @if (isEditMode()) {
+                <mat-card-actions class="flex justify-end gap-3">
+                  <button
+                    type="button"
+                    mat-raised-button
+                    color="primary"
+                    (click)="updateDog(i)"
+                    [disabled]="isDogLoading(i) || dogGroup.invalid"
+                  >
+                    @if (isDogLoading(i)) {
+                      <mat-spinner
+                        diameter="20"
+                        class="inline-block mr-2"
+                      ></mat-spinner>
+                      Saving...
+                    } @else {
+                      <ng-container>
+                        <mat-icon>save</mat-icon>
+                        {{ dogGroup.value.id ? "Update" : "Create" }} Dog
+                      </ng-container>
+                    }
+                  </button>
+                </mat-card-actions>
+              }
             </mat-card>
           }
         </div>
@@ -236,36 +312,38 @@
           </div>
         }
 
-        <!-- Action Buttons -->
-        <div class="flex justify-end gap-3 mt-6">
-          <button
-            type="button"
-            mat-stroked-button
-            (click)="onCancel()"
-            [disabled]="isLoading()"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            mat-raised-button
-            color="primary"
-            [disabled]="isLoading() || clientForm.invalid"
-          >
-            @if (isLoading()) {
-              <mat-spinner
-                diameter="20"
-                class="inline-block mr-2"
-              ></mat-spinner>
-              Saving...
-            } @else {
-              <ng-container>
-                <mat-icon>save</mat-icon>
-                Save Client
-              </ng-container>
-            }
-          </button>
-        </div>
+        @if (!isEditMode()) {
+          <!-- Action Buttons -->
+          <div class="flex justify-end gap-3 mt-6">
+            <button
+              type="button"
+              mat-stroked-button
+              (click)="onCancel()"
+              [disabled]="isLoading()"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              mat-raised-button
+              color="primary"
+              [disabled]="isLoading() || clientForm.invalid"
+            >
+              @if (isLoading()) {
+                <mat-spinner
+                  diameter="20"
+                  class="inline-block mr-2"
+                ></mat-spinner>
+                Saving...
+              } @else {
+                <ng-container>
+                  <mat-icon>save</mat-icon>
+                  Save Client
+                </ng-container>
+              }
+            </button>
+          </div>
+        }
       </form>
     </mat-card-content>
   </mat-card>

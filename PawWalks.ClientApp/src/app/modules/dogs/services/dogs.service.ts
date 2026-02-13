@@ -5,7 +5,6 @@ import { LOCALHOST_CONFIG } from '../../../../config/localhost.config';
 import {
   DogCreateRequest,
   DogUpdateRequest,
-  DogListItemDto,
   DogDetailDto,
 } from '../models/dogs.model';
 import { PagedResult } from '../../../shared/models/pagination';
@@ -21,7 +20,7 @@ export class DogsService {
     pageNumber: number = 1,
     pageSize: number = 10,
     clientId?: string,
-  ): Observable<PagedResult<DogListItemDto>> {
+  ): Observable<PagedResult<DogDetailDto>> {
     let params = new HttpParams()
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
@@ -30,7 +29,7 @@ export class DogsService {
       params = params.set('clientId', clientId);
     }
 
-    return this.http.get<PagedResult<DogListItemDto>>(this.apiUrl, { params });
+    return this.http.get<PagedResult<DogDetailDto>>(this.apiUrl, { params });
   }
 
   getDogById(id: string): Observable<DogDetailDto> {

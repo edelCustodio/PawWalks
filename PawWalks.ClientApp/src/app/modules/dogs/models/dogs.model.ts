@@ -18,15 +18,6 @@ export interface DogUpdateRequest {
   isActive: boolean;
 }
 
-export interface DogListItemDto {
-  id: string;
-  clientId: string;
-  name: string;
-  breed: string;
-  isActive: boolean;
-  clientName?: string;
-}
-
 export interface DogDetailDto {
   id: string;
   clientId: string;
@@ -41,6 +32,7 @@ export interface DogDetailDto {
 }
 
 export interface DogFormModel {
+  id?: string; // For tracking existing dogs in edit mode
   name: string;
   breed: string;
   birthDate: string; // Will use date input
@@ -49,6 +41,7 @@ export interface DogFormModel {
 }
 
 export const dogInitialModel: DogFormModel = {
+  id: undefined,
   name: '',
   breed: '',
   birthDate: '',
