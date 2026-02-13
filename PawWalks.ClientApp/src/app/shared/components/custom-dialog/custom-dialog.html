@@ -3,10 +3,7 @@
   @if (data.dismissible) {
     <div class="absolute right-0 top-0 pr-4 pt-4">
       <button mat-icon-button [matDialogClose]="undefined">
-        <mat-icon
-          class="text-secondary"
-          [svgIcon]="'heroicons_outline:x-mark'"
-        ></mat-icon>
+        <mat-icon class="text-secondary">close</mat-icon>
       </button>
     </div>
   }
@@ -38,12 +35,9 @@
             data.icon?.color === 'error',
         }"
       >
-        <mat-icon
-          class="text-current"
-          [svgIcon]="
-            data.icon?.name || 'heroicons_outline:exclamation-triangle'
-          "
-        ></mat-icon>
+        <mat-icon class="text-current">{{
+          data.icon?.name || "warning"
+        }}</mat-icon>
       </div>
     }
 
@@ -74,7 +68,7 @@
     >
       <!-- Cancel -->
       @if (data.actions?.cancel?.show) {
-        <button mat-stroked-button [matDialogClose]="'cancelled'">
+        <button mat-stroked-button [matDialogClose]="false">
           {{ data.actions?.cancel?.label }}
         </button>
       }
@@ -84,7 +78,7 @@
         <button
           mat-flat-button
           [color]="data.actions?.confirm?.color"
-          [matDialogClose]="'confirmed'"
+          [matDialogClose]="true"
         >
           {{ data.actions?.confirm?.label }}
         </button>

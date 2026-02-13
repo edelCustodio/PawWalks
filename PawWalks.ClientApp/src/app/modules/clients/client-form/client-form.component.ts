@@ -308,7 +308,7 @@ export class ClientFormComponent implements OnInit {
       message: `Are you sure you want to delete "${dog.name}"? This action cannot be undone.`,
       icon: {
         show: true,
-        name: 'heroicons_outline:exclamation-triangle',
+        name: 'warning',
         color: 'warn',
       },
       actions: {

@@ -119,7 +119,7 @@ export class ClientsComponent implements OnInit {
       message: `Are you sure you want to delete ${client.firstName} ${client.lastName}? This action will also delete all associated dogs and cannot be undone.`,
       icon: {
         show: true,
-        name: 'heroicons_outline:exclamation-triangle',
+        name: 'warning',
         color: 'warn',
       },
       actions: {

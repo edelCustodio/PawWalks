@@ -12,7 +12,7 @@ export class ConfirmationService {
     message: 'Are you sure you want to confirm this action?',
     icon: {
       show: true,
-      name: 'heroicons_outline:exclamation-triangle',
+      name: 'warning',
       color: 'warn',
     },
     actions: {
