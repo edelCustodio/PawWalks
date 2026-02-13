@@ -22,6 +22,8 @@ export interface ColumnConfig<T> {
   cssClass?: string;
   /** Custom formatter function to transform cell value */
   formatter?: (value: any, row: T) => string;
+  /** Render formatted content as HTML (use with caution) */
+  renderAsHtml?: boolean;
 }
 
 /**

@@ -94,6 +94,8 @@
                     context: { $implicit: row }
                   "
                 ></ng-container>
+              } @else if (column.renderAsHtml) {
+                <span [innerHTML]="getCellValue(row, column)"></span>
               } @else {
                 {{ getCellValue(row, column) }}
               }
