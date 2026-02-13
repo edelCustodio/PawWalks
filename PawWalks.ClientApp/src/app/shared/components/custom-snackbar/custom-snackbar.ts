@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 import {
   CustomSnackbarData,
   SnackbarType,
@@ -8,7 +9,7 @@ import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-custom-snackbar',
-  imports: [NgClass],
+  imports: [NgClass, MatIconModule],
   templateUrl: './custom-snackbar.html',
   styleUrl: './custom-snackbar.scss',
 })

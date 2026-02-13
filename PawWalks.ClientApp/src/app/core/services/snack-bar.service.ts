@@ -14,7 +14,7 @@ export class SnackbarService {
       duration: 3000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
-      panelClass: [], // vacía porque todo el estilo viene del componente
+      panelClass: ['snackbar-success'],
     });
   }
 
@@ -24,7 +24,7 @@ export class SnackbarService {
       duration: 3000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
-      panelClass: [],
+      panelClass: ['snackbar-warning'],
     });
   }
 
@@ -34,7 +34,7 @@ export class SnackbarService {
       duration: 3000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
-      panelClass: [],
+      panelClass: ['snackbar-error'],
     });
   }
 
@@ -44,7 +44,7 @@ export class SnackbarService {
       duration: 3000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
-      panelClass: [],
+      panelClass: ['snackbar-info'],
     });
   }
 }
