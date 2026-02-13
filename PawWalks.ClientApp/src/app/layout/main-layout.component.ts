@@ -28,7 +28,6 @@ export class MainLayoutComponent {
 
   navItems = [
     { path: '/clients', icon: 'people', label: 'Clients' },
-    { path: '/dogs', icon: 'pets', label: 'Dogs' },
     { path: '/walks', icon: 'directions_walk', label: 'Walks' },
   ];
 
