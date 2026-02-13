@@ -6,6 +6,8 @@ import { DataGridComponent } from '../../shared/components/data-grid/data-grid.c
 import { DataGridConfig } from '../../shared/components/data-grid/data-grid.model';
 import { ClientsService } from './services/clients.service';
 import { ClientDetailDto } from './models/clients.model';
+import { ConfirmationService } from '../../core/services/confirmation.service';
+import { SnackbarService } from '../../core/services/snack-bar.service';
 
 @Component({
   selector: 'app-clients',
@@ -20,6 +22,8 @@ export class ClientsComponent implements OnInit {
   private _clientsService = inject(ClientsService);
   private _router = inject(Router);
   private _route = inject(ActivatedRoute);
+  private _confirmationService = inject(ConfirmationService);
+  private _snackbar = inject(SnackbarService);
 
   get gridConfigWithLoading(): DataGridConfig<ClientDetailDto> {
     return { ...this.gridConfig, loading: this.loading() };
@@ -110,21 +114,49 @@ export class ClientsComponent implements OnInit {
   }
 
   deleteClient(client: ClientDetailDto) {
-    if (
-      confirm(
-        `Are you sure you want to delete ${client.firstName} ${client.lastName}?`,
-      )
-    ) {
-      this._clientsService.deleteClient(client.id).subscribe({
-        next: () => {
-          this.loadClients();
+    const dialogRef = this._confirmationService.open({
+      title: 'Delete Client',
+      message: `Are you sure you want to delete ${client.firstName} ${client.lastName}? This action will also delete all associated dogs and cannot be undone.`,
+      icon: {
+        show: true,
+        name: 'heroicons_outline:exclamation-triangle',
+        color: 'warn',
+      },
+      actions: {
+        confirm: {
+          show: true,
+          label: 'Delete',
+          color: 'warn',
         },
-        error: (error) => {
-          console.error('Error deleting client:', error);
-          alert('Error deleting client');
+        cancel: {
+          show: true,
+          label: 'Cancel',
         },
-      });
-    }
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirmed') {
+        this.loading.set(true);
+        this._clientsService.deleteClient(client.id).subscribe({
+          next: () => {
+            this.loading.set(false);
+            this._snackbar.success(
+              `Client ${client.firstName} ${client.lastName} deleted successfully!`,
+            );
+            this.loadClients();
+          },
+          error: (error) => {
+            this.loading.set(false);
+            const message =
+              error.error?.message ||
+              `Error deleting client ${client.firstName} ${client.lastName}`;
+            this._snackbar.error(message);
+            console.error('Error deleting client:', error);
+          },
+        });
+      }
+    });
   }
 
   onRowClick(client: ClientDetailDto) {
