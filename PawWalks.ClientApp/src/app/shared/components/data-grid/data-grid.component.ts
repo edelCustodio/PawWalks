@@ -8,6 +8,8 @@ import {
   signal,
   computed,
   effect,
+  ContentChild,
+  TemplateRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -58,6 +60,7 @@ export class DataGridComponent<T> {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ContentChild('expandedRow') expandedRowTemplate!: TemplateRef<any>;
 
   // Signals
   _config = signal<DataGridConfig<T>>({
@@ -71,9 +74,15 @@ export class DataGridComponent<T> {
   });
 
   private dataSignal = signal<T[]>([]);
+  expandedRows = signal<Set<T>>(new Set<T>());
+
   displayedColumns = computed(() => {
     const config = this._config();
     const columns = config.columns.map((col) => col.key);
+
+    if (config.expandable) {
+      columns.unshift('expand');
+    }
 
     if (config.selectable) {
       columns.unshift('select');
@@ -184,5 +193,23 @@ export class DataGridComponent<T> {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row`;
+  }
+
+  // Expandable row methods
+  toggleRowExpansion(row: T, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    const expanded = new Set(this.expandedRows());
+    if (expanded.has(row)) {
+      expanded.delete(row);
+    } else {
+      expanded.add(row);
+    }
+    this.expandedRows.set(expanded);
+  }
+
+  isRowExpanded(row: T): boolean {
+    return this.expandedRows().has(row);
   }
 }

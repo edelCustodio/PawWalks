@@ -15,11 +15,35 @@
           background-color: rgba(0, 0, 0, 0.04);
         }
       }
+
+      tr.detail-row {
+        height: 0;
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
     }
 
     .mat-mdc-paginator {
       background: white;
       border-top: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    // CSS-only animation for expandable rows
+    .expandable-row-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      overflow: hidden;
+      transition: grid-template-rows 225ms cubic-bezier(0.4, 0, 0.2, 1);
+
+      &.expanded {
+        grid-template-rows: 1fr;
+      }
+
+      > div {
+        min-height: 0;
+      }
     }
   }
 }

@@ -70,4 +70,6 @@ export interface DataGridConfig<T> {
   loading?: boolean;
   /** Message to show when no data is available */
   noDataMessage?: string;
+  /** Enable expandable rows to show additional content */
+  expandable?: boolean;
 }
